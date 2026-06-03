@@ -3,15 +3,13 @@ package com.practice;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
-import tk.mybatis.spring.annotation.MapperScan;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 
-@MapperScan("com.practice.mapper")
 @SpringBootApplication
 @EnableDiscoveryClient
-@RefreshScope // 动态刷新
-public class Main8001 {
+@EnableFeignClients
+public class MainOpenFeign80 {
     public static void main(String[] args) {
-        SpringApplication.run(Main8001.class,args);
+        SpringApplication.run(MainOpenFeign80.class, args);
     }
 }

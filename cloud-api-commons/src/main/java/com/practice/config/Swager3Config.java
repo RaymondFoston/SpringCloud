@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 public class Swager3Config {
     @Bean
     public GroupedOpenApi payApi(){
-        return GroupedOpenApi.builder().group("支付交易模块").pathsToMatch("/pay/**").build();
+        return GroupedOpenApi.builder().group("Software Module").pathsToMatch("/pay/**").build();
     }
 
     @Bean

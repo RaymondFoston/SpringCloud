@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 @RestController
 @Tag(name = "支付微服务模块", description = "支付CRUD")
@@ -53,20 +52,6 @@ public class PayControler {
     @GetMapping(value = "/pay/get/{id}")
     @Operation(summary = "查询单个", description = "通过主键id查询支付交易信息")
     public ResultData<Pay> getById(@PathVariable(value = "id") Integer id){
-        Pay pay = payService.getById(id);
-        return ResultData.success(pay);
-    }
-
-    @GetMapping(value = "/pay/get/test/{id}")
-    @Operation(summary = "查询单个", description = "通过主键id查询支付交易信息")
-    public ResultData<Pay> getByIdTest(@PathVariable(value = "id") Integer id){
-        if (id == -4) throw new RuntimeException("id 不能为负数");
-        //暂停62s线程，测试feign的超时调用时间
-        try {
-            TimeUnit.SECONDS.sleep(62);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
         Pay pay = payService.getById(id);
         return ResultData.success(pay);
     }
