@@ -1,6 +1,5 @@
 package com.practice.controller;
 
-import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
 import com.practice.apis.PayFeignApi;
 import com.practice.entities.PayDTD;
@@ -9,13 +8,10 @@ import com.practice.resp.ReturnCodeEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
-
-import java.util.List;
 
 @RestController
 @Slf4j
-public class OrderCOntroller {
+public class OrderController {
 //    public static final String PAYMENT_URL = "http://localhost:8001";
     public static final String PAYMENT_URL = "http://cloud-payment-service";
     @Autowired

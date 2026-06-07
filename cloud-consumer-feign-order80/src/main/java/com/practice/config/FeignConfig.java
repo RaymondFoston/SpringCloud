@@ -10,9 +10,9 @@ public class FeignConfig {
     @Bean
     public Retryer feignRetryer() {
         //最大尝试次数（包含开始次数）：3
-        return new Retryer.Default(1000, 1, 3);
+//        return new Retryer.Default(1000, 1, 3);
         //默认关闭重试策略
-//        return Retryer.NEVER_RETRY;
+        return Retryer.NEVER_RETRY;
     }
 
     @Bean
