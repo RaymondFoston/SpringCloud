@@ -1,0 +1,71 @@
+server:
+  port: 9527
+
+spring:
+  application:
+    name: cloud-gateway #以微服务注册进consul或nacos服务列表内
+  cloud:
+    consul: #配置consul地址
+      host: 10.211.55.30
+      port: 8500
+      discovery:
+        prefer-ip-address: true
+        service-name: ${spring.application.name}
+        ip-address: 10.211.55.1
+    gateway:
+      routes:
+        # curl localhost:9527/pay/gateway/get/info?userType=vip
+        - id: pay-gateway-get-info                 #路由的ID(类似mysql主键ID)，没有固定规则但要求唯一，建议配合服务名
+          uri: lb://cloud-payment-service                #匹配后提供服务的路由地址
+          predicates:
+            - Path=/pay/gateway/get/info              # 断言，路径相匹配的进行路由
+            #            - name: My
+            #              args:
+            #                userType: vip
+            - Custom=vip   # 定制的CustomRoutePredicateFactory
+
+
+        - id: pay-gateway-get-id                 #路由的ID(类似mysql主键ID)，没有固定规则但要求唯一，建议配合服务名
+#          uri: http://10.211.55.1:8001
+          uri: lb://cloud-payment-service                #匹配后提供服务的路由地址
+          predicates:
+              # curl 10.211.55.1:9527/pay/gateway/get/1?username=Mike_888 --cookie "username=Mike" -H "X-Request-Id:12345" -H "Host:www.dev.com"
+            - Path=/pay/gateway/get/{id}              # 断言，路径相匹配的进行路由
+            - After=2026-06-09T16:44:10.065868+08:00[Asia/Shanghai]
+            - Before=3026-06-09T16:44:10.065868+08:00[Asia/Shanghai]
+            - Between=2026-06-09T16:44:10.065868+08:00[Asia/Shanghai],3026-06-09T16:46:10.065868+08:00[Asia/Shanghai]
+            - Cookie=username,Mike
+            - Header=X-Request-Id,\d+
+            - Host=**.dev.com
+            - Query=username,\w+
+            - RemoteAddr=10.211.55.1/24
+            - Method=GET,POST
+
+
+
+
+
+# http://localhost:9527/pay/gateway/filter?Freedom=We_the_people&customerId=9999&customerName=Jim
+        - id: pay-gateway-filter
+          uri: lb://cloud-payment-service
+          predicates:
+            - Path=/pay/gateway/filter
+#            - Path=/gateway/filter/** 与filters下的  - PrefixPath=/pay # http://localhost:9527/pay/gateway/filter 搭配 与上面的path一致
+#            - Path=/xyz/abc/{segment} 与filters下的- SetPath=/pay/gateway/{segment}搭配 与上面的path一致
+
+          filters:
+            - AddRequestHeader=X-Request-Democracy,Democracy
+            - AddRequestHeader=X-Request-Freedom,Freedom
+            - RemoveRequestHeader=sec-fetch-dest
+            - SetRequestHeader=sec-fetch-mode,Revolution
+            - AddRequestParameter=customerId,9527001 # 新增请求参数Parameter：k ，v
+            - RemoveRequestParameter=customerName   # 删除url请求参数customerName，你传递过来也是null
+            - AddResponseHeader=X-Response-Freedom,Freedom
+            - name: SetResponseHeader
+              args:
+                name: Date
+                value: Sat, 01 Jan 2099 00:00:00 GMT
+#            - SetResponseHeader=Date, 2099-01-01   # 这个是上面的简写形式
+            - RemoveResponseHeader=transfer-encoding
+#            - RedirectTo=302, http://www.bing.com/ # 将上面的注释掉
+            - Custom=Freedom # 定制的filter
