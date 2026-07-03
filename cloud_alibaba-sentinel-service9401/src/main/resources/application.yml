@@ -1,0 +1,59 @@
+server:
+  port: 9401
+
+spring:
+  application:
+    name: cloudalibaba-sentinel-service
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 10.211.55.30:8848         #Nacos服务注册中心地址
+    sentinel:
+      transport:
+        dashboard: 10.211.55.30:8858 #配置Sentinel dashboard控制台服务地址
+        port: 8719 #默认8719端口，假如被占用会自动从8719开始依次+1扫描,直至找到未被占用的端口
+        client-ip: 10.211.55.1 # 当client和dashboard不在同一个地址时必须配
+      eager: true   # 启动时就初始化，不等首次请求
+      web-context-unify: false # controller层的方法对service层调用不认为是同一个根链路
+      datasource:
+        flow:
+          nacos:
+            server-addr: 10.211.55.30:8848
+            namespace:
+            data-id: ${spring.application.name}-flow-rules
+            group-id: DEFAULT_GROUP
+            data-type: json
+            rule-type: flow
+        degrade:
+          nacos:
+            server-addr: 10.211.55.30:8848
+            namespace:
+            data-id: ${spring.application.name}-degrade-rules
+            group-id: DEFAULT_GROUP
+            data-type: json
+            rule-type: degrade
+        param-flow:
+          nacos:
+            server-addr: 10.211.55.30:8848
+            namespace:
+            data-id: ${spring.application.name}-param-flow-rules
+            group-id: DEFAULT_GROUP
+            data-type: json
+            rule-type: param-flow
+        system:
+          nacos:
+            server-addr: 10.211.55.30:8848
+            namespace:
+            data-id: ${spring.application.name}-system-rules
+            group-id: DEFAULT_GROUP
+            data-type: json
+            rule-type: system
+
+        authority: # 授权规则数据源（名称 ds-authority 可自定义）
+          nacos:
+            server-addr: 10.211.55.30:8848
+            namespace: ""      # 为默认的public时，应留空否则识别错误哦。或用自定义的其他命名空间ID
+            data-id: ${spring.application.name}-authority-rules
+            group-id: SENTINEL_GROUP    # 或 DEFAULT_GROUP
+            data-type: json
+            rule-type: authority        # ★ 关键：指定为授权规则

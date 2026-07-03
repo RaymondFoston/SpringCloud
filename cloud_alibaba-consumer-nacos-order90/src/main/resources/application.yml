@@ -1,0 +1,18 @@
+server:
+  port: 90
+spring:
+  application:
+    name: nacos-order-consumer
+  cloud:
+    nacos:
+      discovery:
+        server-addr: http://10.211.55.30:8848
+# Provider name
+service-url:
+  nacos-user-service: http://nacos-payment-provider
+
+# 激活Sentinel对Feign的支持
+feign:
+  sentinel:
+    enabled: true
+

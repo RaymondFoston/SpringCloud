@@ -1,6 +1,8 @@
 package com.practice.entities;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -9,7 +11,7 @@ import java.math.BigDecimal;
  * 一般而言，调用者不应该获悉服务提供者的entities资源并知道表结构关系，所以服务方给出的
  * 接口文档都应成为DTO
  */
-@Data
+@Data@NoArgsConstructor@AllArgsConstructor
 public class PayDTD implements Serializable {
     private Integer id;
     //支付流水号
